@@ -14,11 +14,11 @@
 
 	<?php echo form_open('authentication/user')?>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" name="admin_email" id="user_email" placeholder="<?php echo lang('element_email') ?>">
+        <input type="email" class="form-control" name="user_email" id="user_email" placeholder="<?php echo lang('element_email') ?>">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="admin_password" id="user_password" placeholder="<?php echo lang('element_password')?>">
+        <input type="password" class="form-control" name="user_password" id="user_password" placeholder="<?php echo lang('element_password')?>">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
