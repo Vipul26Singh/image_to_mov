@@ -10,8 +10,6 @@ class Admin extends CI_Controller {
 		if(!$this->session->userdata('logged_in'))
 		{ 
 			redirect('authentication/admin');
-		}else{
-			exec("rm -rf ". UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/");
 		}
 	}
 

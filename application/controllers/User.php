@@ -13,8 +13,6 @@ class User extends CI_Controller {
 		if(!$this->session->userdata('logged_in'))
 		{ 
 			redirect('authentication/user');
-		}else{
-                        exec("rm -rf ". UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/");
                 }
 	}
 
@@ -83,9 +81,18 @@ class User extends CI_Controller {
 
 
 
-		exec(FFMPEG_PATH."ffmpeg -f image2 -s {$resolution} -i {$input_path}%d_temp.png -vcodec png -crf 25  {$output_path}out.mov -hide_banner 2>&1", $exec_info);
+		$ffmpeg_path = null;
+		exec("which ffmpeg 2>&1", $ffmpeg_path);	
 
-		exec(FFMPEG_PATH."ffmpeg -f image2 -s {$resolution} -i {$input_path}%d_temp.png -vcodec libx264 -crf 25  {$output_path}out.mp4");
+		$ffmpeg_path = $ffmpeg_path[0];
+
+		$cmd_1 =  "{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec png -pix_fmt rgb24 {$output_path}out.mov";
+		$cmd_2 = "{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec libx264 -pix_fmt yuv420p {$output_path}out.mp4";
+
+		exec("{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec png -pix_fmt rgb24 {$output_path}out.mov -hide_banner 2>&1", $exec_info);
+
+		exec("{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec libx264 {$output_path}out.mp4");
+
 
 		$data['vid_src'] = base_url($output_path."out.mp4");
 		$data['mov_src'] = base_url($output_path."out.mov");
@@ -95,7 +102,7 @@ class User extends CI_Controller {
 		$data['res_1'] = $res_1;
 		$data['res_2'] = $res_2;
 
-		$data['success_message'][] = "Video created succesfully";
+		$data['success_message'][] = "Video created succefully";
 
 		$this->load->view('header');
 		$this->load->view('user/generate', $data);
