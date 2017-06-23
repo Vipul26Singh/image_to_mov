@@ -152,15 +152,42 @@ class Authentication extends CI_Controller {
 		{
 			if($_POST['ctransaction'] == 'SALE')
 			{
-				$this->load->model('User_model');
-				if($this->User_model->set_payment($this->session->userdata('user_id'))){
-					$this->update_session_data('logged_in', TRUE);
-					redirect('User');	
-				}else{
-					echo lang('err_payment_not_verified');
-				}
+				$payment_id = $_POST['ctransreceipt'];
+				$this->load->model('Payment_model');
+				$this->User_model->add_payment($payment_id);
+	
+				echo lang('authenticate_url').base_url('authentication/activate_account');
 			}
 		}
+	}
+
+	public function activate_account(){
+		$data['errors'] = array();
+		$data['success_message'] = array();
+
+		if(!empty($this->input->post())){
+			$email = $this->input->post('user_email', TRUE);
+			$auth_key = $this->input->post('user_auth_key', TRUE);
+
+			$this->load->model('User_model');
+			$this->load->model('Payment_model');
+
+			if($this->Payment_model->get_payment($auth_key)>0){
+				if($this->User_model->set_payment($email)){
+					$this->update_session_data('logged_in', TRUE);
+					$this->Payment_model->delete_payment($auth_key);
+					redirect('User');       
+				}else{
+					 $data['errors'][] = lang('invalid_user_email');
+				}
+			}else{
+				$data['errors'][] = lang('invalid_payment_id');
+			}
+		}
+
+		$this->load->view('header');
+                $this->load->view('authentication/user_activate', $data);
+                $this->load->view('footer');
 	}
 
 	private function jvzipnVerification($data) {

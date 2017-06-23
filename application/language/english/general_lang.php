@@ -12,7 +12,7 @@
 	$lang['company_name'] = "Bitibe";
 	$lang['sign_in_starter'] = "Sign in to start your session";
 	$lang['sign_in'] = "Sign In";
-	$lang['get_membership'] = "Buy Membership";
+	$lang['get_membership'] = "Buy";
 	$lang['register_message'] = "Register for a new membership";
 	$lang['full_name'] = "Full Name";
 	$lang['term_and_condition'] = "I agree with terms";
@@ -65,4 +65,9 @@
 	$lang['add_to_ws'] = "Prepare for MOV";
 	$lang['regenrate_mov'] = "Recreate MOV";
 	$lang['download_mov'] = "Download MOV";
+	$lang['validate_membership'] = "Activate Account";
+	$lang['authenticate_url'] = "Please authentication using ";
+	$lang['invalid_user_email'] = "Email not found";
+	$lang['invalid_payment_id'] = "Payment id is Invalid";
+	$lang['payment_id'] = 'Purchase code';
 ?>

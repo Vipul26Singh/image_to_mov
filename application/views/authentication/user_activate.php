@@ -12,32 +12,18 @@
 	?>
 	</div>
 
-	<?php echo form_open('authentication/user')?>
+	<?php echo form_open('authentication/activate_account')?>
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="user_email" id="user_email" placeholder="<?php echo lang('element_email') ?>">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="user_password" id="user_password" placeholder="<?php echo lang('element_password')?>">
+        <input type="text" class="form-control" name="user_auth_key" id="user_auth_key" placeholder="<?php echo lang('payment_id')?>">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block"><?php echo lang('sign_in') ?></button>
-        </div>
-
-	
-	<div class="pull-right">
-		<a class="btn btn-primary btn-block" href="user_registration" role="button"><?php echo lang('get_membership') ?></a>
-        </div>
-
-      </div>
-	<br>
-
-	<div class="row">
-
-        <div class="col-xs-6 text-center">
-                <a class="btn btn-primary btn-block" href="activate_account" role="button"><?php echo lang('validate_membership') ?></a>
+        <div>
+          <button type="submit" class="btn btn-primary btn-block"><?php echo lang('validate_membership') ?></button>
         </div>
 
       </div>

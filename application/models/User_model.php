@@ -23,9 +23,9 @@ class User_model extends CI_Model{
 		return true;
 	}
 
-	public function set_payment($user_id){
+	public function set_payment($user_mail){
 		$data['payment_status'] = 1;	
-		$this->db->where('user_id', $user_id);
+		$this->db->where('email', $user_mail);
 		if($this->db->update('user', $data)){
 			if($this->db->affected_rows()){
 				return true;
