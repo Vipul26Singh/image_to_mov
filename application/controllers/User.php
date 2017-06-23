@@ -13,7 +13,12 @@ class User extends CI_Controller {
 		if(!$this->session->userdata('logged_in'))
 		{ 
 			redirect('authentication/user');
-                }
+                }else{
+			if($this->session->userdata('deleteCreateFolder') == 'YES'){
+				exec("rm -rf ". UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/");	
+				$this->session->set_userdata('deleteCreateFolder', 'NO');
+			}
+		}
 	}
 
 	public function index()
@@ -29,9 +34,11 @@ class User extends CI_Controller {
 	}
 
 	public function downloadMov(){
-		$file = UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/create/out.mov";
+		$this->session->set_userdata('deleteCreateFolder', 'YES');
+		$file = FCPATH."/".UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/preview/".$this->session->userdata('videoName').".mov";
 
 		$file_content = file_get_contents($file);
+
 		exec("rm -rf ". UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/");
 		 $this->load->helper('download');
 		
@@ -40,6 +47,9 @@ class User extends CI_Controller {
 
 	public function generateMov()
 	{
+
+		
+		$this->session->set_userdata('videoName', uniqid());
 		$this->load->model('Config_model');
                 $menu_active = "create";
                 $data = array(
@@ -54,7 +64,7 @@ class User extends CI_Controller {
 
 		exec("rm -rf ". $output_path);
 
-		$frame_rate = 1;
+		$frame_rate = 24;
 		$post_data = $this->input->post();
 
 		if(!empty($post_data['fps'])){
@@ -86,23 +96,25 @@ class User extends CI_Controller {
 
 		$ffmpeg_path = $ffmpeg_path[0];
 
-		$cmd_1 =  "{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec png -pix_fmt rgb24 {$output_path}out.mov";
-		$cmd_2 = "{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec libx264 -pix_fmt yuv420p {$output_path}out.mp4";
+		$cmd_1 =  "{$ffmpeg_path} -s {$resolution} -framerate {$frame_rate} -i {$input_path}%d_temp.png -vcodec png  -r {$frame_rate} {$output_path}".$this->session->userdata('videoName').".mov";
+		$cmd_2 = "{$ffmpeg_path} -s {$resolution} -framerate {$frame_rate} -i {$input_path}%d_temp.png -vcodec libx264  -r {$frame_rate} {$output_path}".$this->session->userdata('videoName').".mp4";
 
-		exec("{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec png -pix_fmt rgb24 {$output_path}out.mov -hide_banner 2>&1", $exec_info);
+		exec("echo y | {$cmd_1} -hide_banner 2>&1", $exec_info);
 
-		exec("{$ffmpeg_path} -r {$frame_rate} -s {$resolution} -i {$input_path}%d_temp.png -vcodec libx264 {$output_path}out.mp4");
+		exec("echo y | {$cmd_2}");
 
 
-		$data['vid_src'] = base_url($output_path."out.mp4");
-		$data['mov_src'] = base_url($output_path."out.mov");
+		$data['vid_src'] = base_url($output_path.$this->session->userdata('videoName').".mp4");
+		$data['mov_src'] = base_url($output_path.$this->session->userdata('videoName').".mov");
 
 
 		$data['fps'] = $frame_rate;
 		$data['res_1'] = $res_1;
 		$data['res_2'] = $res_2;
 
-		$data['success_message'][] = "Video created succefully";
+	
+		$data['success_message'][] = "Video created successfully";
+
 
 		$this->load->view('header');
 		$this->load->view('user/generate', $data);
@@ -175,6 +187,8 @@ class User extends CI_Controller {
                 $data = array(
                                 'menu_active' => $menu_active
                         );
+
+		$this->session->set_userdata('deleteCreateFolder', 'YES');
 	
 		$data['errors'] = array();
 		$data['success_message'] = array();
@@ -212,6 +226,7 @@ class User extends CI_Controller {
 				$convert_file_name = 'convert_'.$file_name;
 
 				exec(FFMPEG_PATH."ffmpeg -i {$file_path}{$file_name} -vcodec png -acodec png {$file_path}{$convert_file_name}");
+
 
 				$file_content = file_get_contents($file_path.$convert_file_name);
 

@@ -22,12 +22,14 @@
 
 	<div id="dropzoneSort">
 		<form action="<?php echo base_url('user/create'); ?>" class="dropzone" id="myDropzone">
+			<input type="text"  name="del_fol" id="del_fol"  value="NO" hidden/>
 		</form> 
 	</div>
 
 	<br>
 	<div >
 	<form action="<?php echo base_url('user/generateMov'); ?>">
+		<input type="text"  name="del_fol" id="del_fol"  value="NO" hidden/>
 		<input type="button" id="act-on-upload" class="btn btn-success" value="<?php echo lang('add_to_ws');?>" />
 	 	<input type="submit" id="preview-mov" class="btn btn-success pull-right" value="<?php echo lang('preview_mov');?>" />
 	</form>

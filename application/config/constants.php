@@ -88,4 +88,4 @@ defined('JVZOO_PRODUCT_URL')	OR define('JVZOO_PRODUCT_URL', 'jvzoo_product_url')
 defined('JVZOO_SECRET_KEY')	OR define('JVZOO_SECRET_KEY', 'jvzoo_secret_key');
 defined('UPLOAD_DIRECTORY')	OR define('UPLOAD_DIRECTORY', './uploads/');
 defined('COMAPNAY_NAME')     OR define('COMPANY_NAME', 'BITIBE');
-defined('FFMPEG_PATH')		OR define('FFMPEG_PATH', '/usr/local/bin/');
+defined('FFMPEG_PATH')		OR define('FFMPEG_PATH', '/usr/bin/');
