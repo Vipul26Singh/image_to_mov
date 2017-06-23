@@ -70,4 +70,5 @@
 	$lang['invalid_user_email'] = "Email not found";
 	$lang['invalid_payment_id'] = "Payment id is Invalid";
 	$lang['payment_id'] = 'Purchase code';
+	$lang['refnd'] = 'Refunded';
 ?>

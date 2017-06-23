@@ -48,7 +48,9 @@
                         }
                         if($user['payment_status'] == 1){
                                 echo "<td><span class='label label-success'>".lang('paid')."</span></td>";
-                        }else{
+                        }else if($user['payment_status'] == 2){
+				echo "<td><span class='label label-success'>".lang('refnd')."</span></td>";
+			}else{
                                 echo "<td><span class='label label-danger'>".lang('pending')."</span></td>";
                         }
                 ?>

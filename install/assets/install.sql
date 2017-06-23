@@ -88,7 +88,8 @@ CREATE TABLE `user` (
   `password` varchar(100) NOT NULL,
   `fk_profile_id` int(11) NOT NULL,
   `payment_status` tinyint(1) NOT NULL DEFAULT '0',
-  `creation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `creation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `auth_key` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

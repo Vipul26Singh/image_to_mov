@@ -23,18 +23,44 @@ class User_model extends CI_Model{
 		return true;
 	}
 
-	public function set_payment($user_mail){
-		$data['payment_status'] = 1;	
-		$this->db->where('email', $user_mail);
-		if($this->db->update('user', $data)){
-			if($this->db->affected_rows()){
-				return true;
-			}
-		}
-		
-		return false;
-		
+	public function set_payment($user_mail, $auth_key){
+                $data['payment_status'] = 1;
+                $data['auth_key'] = $auth_key;
+                $this->db->where('email', $user_mail);
+                if($this->db->update('user', $data)){
+                        if($this->db->affected_rows()){
+                                return true;
+                        }
+                }
+
+                return false;
+
+        }
+
+	public function get_user_payment_status($user_mail){
+
+		$this->db->select('count(*) as count');
+                $this->db->from('user');
+		$this->db->where('payment_status', '1');
+
+                $query = $this->db->get();
+                $result = $query->row_array();
+
+
+                return $result['count'];
 	}
+
+	public function deactivate_user($auth_key){
+                $data['payment_status'] = 2;
+                $this->db->where('auth_key', $auth_key);
+                if($this->db->update('user', $data)){
+                        if($this->db->affected_rows()){
+                                return true;
+                        }
+                }
+                return false;
+
+        }
 
 	public function get_user_list(){
 		$this->db->select('*');

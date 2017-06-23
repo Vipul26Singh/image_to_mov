@@ -50,7 +50,15 @@ class Authentication extends CI_Controller {
                 $data['errors'] = array();
 
                 if($this->session->userdata('logged_in')==TRUE){
-                        redirect('User/convert');
+
+			$this->load->model('User_model');
+
+			if($this->User_model->get_user_payment_status($this->session->userdata('email'))){
+                        	redirect('User/convert');
+			}else{
+				$this->session->sess_destroy();
+				redirect('User/convert');
+			}
                 }
 
                 $this->load->library('form_validation');
@@ -154,9 +162,13 @@ class Authentication extends CI_Controller {
 			{
 				$payment_id = $_POST['ctransreceipt'];
 				$this->load->model('Payment_model');
-				$this->User_model->add_payment($payment_id);
+				$this->Payment_model->add_payment($payment_id);
 	
 				echo lang('authenticate_url').base_url('authentication/activate_account');
+			}else if($_POST['ctransaction'] == 'RFND'){
+				$payment_id = $_POST['ctransreceipt'];
+				$this->load->model('User_model');
+                                $this->User_model->deactivate_user($payment_id);
 			}
 		}
 	}
@@ -173,7 +185,7 @@ class Authentication extends CI_Controller {
 			$this->load->model('Payment_model');
 
 			if($this->Payment_model->get_payment($auth_key)>0){
-				if($this->User_model->set_payment($email)){
+				if($this->User_model->set_payment($email, $auth_key)){
 					$this->update_session_data('logged_in', TRUE);
 					$this->Payment_model->delete_payment($auth_key);
 					redirect('User');       
