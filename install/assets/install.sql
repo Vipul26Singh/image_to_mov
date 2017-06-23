@@ -45,8 +45,22 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `payment_id` varchar(100) NOT NULL,
+  `used` int(11) NOT NULL,
+  `trans_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `profile`
 --
+
 
 CREATE TABLE `profile` (
   `profile_id` int(11) NOT NULL,
