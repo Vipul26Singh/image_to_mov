@@ -173,7 +173,7 @@ class User extends CI_Controller {
 				http_response_code (200);
 			}
 		}else{
-
+			exec("rm -rf ". UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/");
 			$this->load->view('header');
 			$this->load->view('user/create', $data);
 			$this->load->view('footer');
