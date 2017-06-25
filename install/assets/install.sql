@@ -40,7 +40,12 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
 (1, 'jvzoo_product_url', ''),
 (2, 'jvzoo_ipn_url', 'authentication/authenticate_payment/'),
 (3, 'jvzoo_secret_key', ''),
-(4, 'file_size_limit', '100');
+(4, 'file_size_limit', '100')
+(5, 'smtp_port', '465'),
+(6, 'smtp_host', 'smtp.zoho.com'),
+(7, 'smtp_user', ''),
+(8, 'smtp_pass', ''),
+(9, 'smtp_allow', 'YES');
 
 -- --------------------------------------------------------
 

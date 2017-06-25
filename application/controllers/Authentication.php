@@ -13,6 +13,7 @@ class Authentication extends CI_Controller {
 	public function admin(){
 		$data=array();
 		$data['errors'] = array();
+		$data['success_message'] = array();
 
 		if($this->session->userdata('logged_in')==TRUE){
 			redirect('Admin/dashboard');
@@ -76,6 +77,7 @@ class Authentication extends CI_Controller {
 
                         try{
                                 $user_data = $this->Authentication_model->authenticate($email, $password, 2);
+
                                 $this->set_user_session($user_data);
 				redirect('User');
                         }catch(Exception $e){
@@ -132,7 +134,6 @@ class Authentication extends CI_Controller {
 
                         try{
                                 $user_data = $this->User_model->register_user($model_data);
-                                $this->set_user_session($user_data);
 				$redirect_url = $this->Config_model->get_config(JVZOO_PRODUCT_URL);
 
 				if(isset($redirect_url)){
@@ -230,15 +231,16 @@ class Authentication extends CI_Controller {
 		$this->session->set_userdata('session_id', uniqid('id', true));
 		$this->session->set_userdata('email', $user_data['email']);
 		$this->session->set_userdata('profile_id', $user_data['fk_profile_id']);
-		$this->session->set_userdata('user_name', $user_data['user_name']);
+
+		if(!empty($user_data['user_name'])){
+			$this->session->set_userdata('user_name', $user_data['user_name']);
+		}
+		
 		$this->session->set_userdata('user_id', $user_data['user_id']);
 		$this->session->set_userdata('imageSequence', "1");
 		
-		if($user_data['fk_profile_id']!=1){
-			$this->session->set_userdata('logged_in', FALSE);
-		}else{
 			$this->session->set_userdata('logged_in', TRUE);
-		}
+
 	}
 
 	private function update_session_data($key, $value){
@@ -249,5 +251,91 @@ class Authentication extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect('user/convert');
 	}
+
+	public function forgot_password() { 
+		$this->load->model('User_model');
+		$data['errors'] = array();
+                $data['success_message'] = array();
+
+
+
+		if(!empty($this->input->post())){
+			$this->load->model('Config_model');
+			$smtp_data = $this->Config_model->get_smtp_config();
+			$from_email = $smtp_data['smtp_user'];
+
+
+			$to_email = $this->input->post('user_email'); 
+
+
+			if(!empty($to_email) && $this->User_model->get_user($to_email)){
+				$newPwd = uniqid();
+
+				if(!$this->User_model->set_password($to_email, $newPwd)){
+					$data['errors'][] = lang('password_not_set');		
+				}else{
+					$msg = '
+						<html>
+						<head>
+						<title>'.lang('your_password_changed').'</title>
+						</head>
+						<body>
+						'.lang('hi').', '.$to_email.'!
+						<br>
+						'.lang('your_password_changed').' '.lang('element_email').': '.$to_email.', '.lang('element_password').': '.$newPwd.'
+						<br>
+						'.lang('visit_site_to_login').' '.base_url().' <br>
+						</body>
+						</html>';
+
+					//Load email library 
+					$config = NULL;
+					if($smtp_data['smtp_allow']=="YES"){
+						$config = Array(
+								'protocol' => 'smtp',
+								'smtp_host' => $smtp_data['smtp_host'],
+								'smtp_port' => $smtp_data['smtp_port'],
+								'smtp_user' => $from_email,
+								'smtp_pass' => $smtp_data['smtp_pass'],
+								'smtp_crypto'=>'ssl',               
+								'mailtype'=>'html', 
+								'charset'=>'utf-8',
+								'validate'=>TRUE
+							       );
+					}else{
+
+						$config = Array(
+                                                                'mailtype'=>'html',
+                                                                'charset'=>'utf-8'
+                                                               );
+					}
+$this->load->library('email', $config);
+$this->email->set_newline("\r\n");
+
+
+					$this->email->from($from_email, $from_email); 
+					$this->email->to($to_email);
+					$this->email->subject(lang('your_password_changed')); 
+					$this->email->message($msg); 
+
+					//Send mail 
+					$r = $this->email->send();
+					if($r){
+						$data['success_message'][] = lang('password_reset');
+					}else{
+						$data['errors'][] = lang('email_not_send');
+						$data['errors'][] = $this->email->print_debugger();
+					}	
+				}
+
+			}else{
+				$data['errors'][] = lang('invalid_user_email');
+			}
+		}
+
+		$this->load->view('header');
+                $this->load->view('authentication/forgot_password', $data);
+                $this->load->view('footer');
+	} 
 }
 ?>

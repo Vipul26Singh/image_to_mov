@@ -71,4 +71,18 @@
 	$lang['invalid_payment_id'] = "Payment id is Invalid";
 	$lang['payment_id'] = 'Purchase code';
 	$lang['refnd'] = 'Refunded';
+	$lang['your_password_changed'] = 'Password Changed';
+	$lang['password_reset'] = 'Your new password send successfully to your email';
+	$lang['email_not_send'] = 'Unable to send email. Please try again later';
+	$lang['visit_site_to_login'] = "Visit site to login";
+	$lang['password_not_set'] = "Password is not set. Please try again";
+	$lang['hi'] = "Hi";
+	$lang['forgotpassword'] = "I forgot my password";	
+	$lang['email_setting'] = "Email Setting";
+	$lang['smtp_host'] = "SMTP Host";
+	$lang['smtp_port'] = "SMTP Port";
+	$lang['smtp_user'] = "SMTP Email";
+	$lang['smtp_pass'] = "SMTP Passsword";
+	$lang['smtp_allow'] = "Use SMTP(More Reliable)";
+	$lang['change_password'] = "Change Password";
 ?>

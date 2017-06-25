@@ -21,6 +21,10 @@
         <input type="password" class="form-control" name="user_password" id="user_password" placeholder="<?php echo lang('element_password')?>">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
+
+	<div class="row text-center">
+		<a href="forgot_password"><?php echo lang('forgotpassword') ?></a>
+        </div>
       <div class="row">
         <div class="col-xs-4">
           <button type="submit" class="btn btn-primary btn-block"><?php echo lang('sign_in') ?></button>

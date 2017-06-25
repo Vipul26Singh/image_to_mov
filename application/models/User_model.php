@@ -37,6 +37,19 @@ class User_model extends CI_Model{
 
         }
 
+	public function set_password($user_mail, $pwd){
+                $data['password'] = sha1($pwd);
+                $this->db->where('email', $user_mail);
+                if($this->db->update('user', $data)){
+                        if($this->db->affected_rows()){
+                                return true;
+                        }
+                }
+
+                return false;
+
+        }
+
 	public function get_user_payment_status($user_mail){
 
 		$this->db->select('count(*) as count');
@@ -49,6 +62,18 @@ class User_model extends CI_Model{
 
                 return $result['count'];
 	}
+
+	public function get_user($user_mail){
+
+                $this->db->select('count(*) as count');
+                $this->db->from('user');
+
+                $query = $this->db->get();
+                $result = $query->row_array();
+
+
+                return $result['count'];
+        }
 
 	public function deactivate_user($auth_key){
                 $data['payment_status'] = 2;
@@ -90,6 +115,11 @@ class User_model extends CI_Model{
 
 	public function update_admin_password($password){
                 $this->db->where('fk_profile_id', '1');
+                $this->db->set('password', sha1($password));
+                $this->db->update('user');
+        }
+
+	public function update_password($email, $password){
                 $this->db->set('password', sha1($password));
                 $this->db->update('user');
         }

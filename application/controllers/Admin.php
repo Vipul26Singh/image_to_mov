@@ -61,7 +61,21 @@ class Admin extends CI_Controller {
 			$this->Config_model->update_config('jvzoo_product_url', $this->input->post('jvzoo_product_url'));
 			$this->Config_model->update_config('file_size_limit', $this->input->post('file_size_limit'));
 			$this->Config_model->update_config('jvzoo_secret_key', $this->input->post('jvzoo_secret_key'));
+
+			$this->Config_model->update_config('smtp_allow', $this->input->post('smtp_allow'));
+
+			if(!empty($this->input->post('smtp_host')))
+				$this->Config_model->update_config('smtp_host', $this->input->post('smtp_host'));
+		
+			if(!empty($this->input->post('smtp_port')))	
+				$this->Config_model->update_config('smtp_port', $this->input->post('smtp_port'));
 			
+			if(!empty($this->input->post('smtp_user')))
+				$this->Config_model->update_config('smtp_user', $this->input->post('smtp_user'));
+			
+			if(!empty($this->input->post('smtp_pass')))
+				$this->Config_model->update_config('smtp_pass', $this->input->post('smtp_pass'));
+
 			if(!empty($this->input->post('admin_email'))){
 				$this->User_model->update_admin_email($this->input->post('admin_email'));
 			}

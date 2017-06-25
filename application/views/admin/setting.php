@@ -99,6 +99,47 @@
                                                         </div>
                                                 </div>
 
+						<br>
+                                                <div class="box-header with-border">
+                                                        <h3 class="box-title"><?php echo lang('email_setting');?></h3>
+                                                </div>
+
+						<div class="form-group">
+                                                        <label for="product_url" class="col-sm-2 control-label"><?php echo lang('smtp_allow');?></label>
+							<input type="checkbox" class="checkbox" name="vehicle" value="YES" <?php if($smtp_allow=="YES") echo "checked"; ?> >
+                                                </div>
+
+                                                <div class="form-group">
+							<label for="product_url" class="col-sm-2 control-label"><?php echo lang('smtp_host');?></label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="smtp_host" name="smtp_host" value="<?php echo $smtp_host?>">
+                                                	</div>
+						</div>
+
+                                                <div class="form-group">
+                                                        <label for="product_url" class="col-sm-2 control-label"><?php echo lang('smtp_port');?></label>
+
+                                                        <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="smtp_port" name="smtp_port" value="<?php echo $smtp_port?>">
+                                                        </div>
+                                                </div>
+
+						<div class="form-group">
+                                                        <label for="product_url" class="col-sm-2 control-label"><?php echo lang('smtp_user');?></label>
+
+                                                        <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="smtp_user" name="smtp_user" value="<?php echo $smtp_user?>">
+                                                        </div>
+                                                </div>
+	
+						<div class="form-group">
+                                                        <label for="product_url" class="col-sm-2 control-label"><?php echo lang('smtp_pass');?></label>
+
+                                                        <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="smtp_pass" name="smtp_pass" value="<?php echo $smtp_pass?>">
+                                                        </div>
+                                                </div>
+
               				</div>
               
 					<div class="box-footer">

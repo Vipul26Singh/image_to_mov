@@ -2,6 +2,7 @@
 	$record_group = ($menu_active == "convert") ? "active" : "";
 	$create_group = ($menu_active == "create") ? "active" : "";
 	$signout_group = ($menu_active == "signout") ? "active" : "";
+	$password_group = ($menu_active == "password") ? "active" : "";
 ?>
 
 <aside class="main-sidebar">
@@ -13,6 +14,10 @@
 
 	<li class="<?= $create_group ?> treeview">
                     <a href="<?= base_url("user") ?>/create"><i class="fa fa-file-image-o"></i> <?php echo lang("create_mov"); ?></a>
+        </li>
+	
+	<li class="<?= $password_group ?> treeview">
+                    <a href="<?= base_url("user") ?>/change_password"><i class="fa fa-key"></i> <?php echo lang("change_password"); ?></a>
         </li>
 
 	<li class="<?= $signout_group ?> treeview">

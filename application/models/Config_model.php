@@ -21,6 +21,17 @@ class Config_model extends CI_Model{
                 return $result;
 	}
 
+	public function get_smtp_config(){
+		$out = array();
+		$out['smtp_allow'] = $this->get_config('smtp_allow');
+		$out['smtp_host'] = $this->get_config('smtp_host');
+		$out['smtp_port'] = $this->get_config('smtp_port');
+		$out['smtp_user'] = $this->get_config('smtp_user');
+		$out['smtp_pass'] = $this->get_config('smtp_pass');
+
+                return $out;
+	}
+
 	public function get_all_config(){
                 $this->db->select('id, name, value');
                 $this->db->from('config');

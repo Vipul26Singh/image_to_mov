@@ -123,44 +123,44 @@ class User extends CI_Controller {
 
 
 	public function create()
-        {
-                $this->load->model('Config_model');
-                $menu_active = "create";
-                $data = array(
-                                'menu_active' => $menu_active
-                        );
+	{
+		$this->load->model('Config_model');
+		$menu_active = "create";
+		$data = array(
+				'menu_active' => $menu_active
+			     );
 
 		$data['errors'] = array();
-                $data['success_message'] = array();
+		$data['success_message'] = array();
 
 		if (!empty($_FILES)){
 
 			$config['upload_path']          = UPLOAD_DIRECTORY."/".$this->session->userdata('session_id')."/create/";
-                        $config['allowed_types']        = 'png';
-                        $config['max_size']             = $this->Config_model->get_config('file_size_limit')*1024;
-                        $config['file_ext_tolower']     = true;
-                        $config['overwrite']            = false;
-                        $config['max_filename_increment'] = 1000;
-                        $config['remove_spaces']        = true; 
+			$config['allowed_types']        = 'png';
+			$config['max_size']             = $this->Config_model->get_config('file_size_limit')*1024;
+			$config['file_ext_tolower']     = true;
+			$config['overwrite']            = false;
+			$config['max_filename_increment'] = 1000;
+			$config['remove_spaces']        = true; 
 
 			if(!file_exists($config['upload_path'])){
 				$this->session->set_userdata('imageSequence', "1");
-                                $oldmask = umask(0);
-                                mkdir($config['upload_path'], 0777, TRUE);
-                        }
+				$oldmask = umask(0);
+				mkdir($config['upload_path'], 0777, TRUE);
+			}
 
 
 			$nextSequence = $this->session->userdata('imageSequence');
 
 
-                        $value = $nextSequence+1;
-                        $this->session->set_userdata('imageSequence', "{$value}");
+			$value = $nextSequence+1;
+			$this->session->set_userdata('imageSequence', "{$value}");
 			$config['file_name'] = $nextSequence."_temp.png";
 
 			$this->load->library('upload', $config);
-                        $this->upload->initialize($config);
+			$this->upload->initialize($config);
 
-                        if ( ! $this->upload->do_upload('file'))
+			if ( ! $this->upload->do_upload('file'))
 			{
 				$output['error'] = $this->upload->display_errors();
 
@@ -168,8 +168,8 @@ class User extends CI_Controller {
 				header( 'Content-Type: application/json; charset=utf-8' );
 				echo json_encode( $output );
 			}
-                        else
-                        {
+			else
+			{
 				http_response_code (200);
 			}
 		}else{
@@ -178,6 +178,34 @@ class User extends CI_Controller {
 			$this->load->view('user/create', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function change_password(){
+		$this->load->model('User_model');
+                $menu_active = "password";
+                $data = array(
+                                'menu_active' => $menu_active
+                             );
+
+                $data['errors'] = array();
+                $data['success_message'] = array();
+
+		if (!empty($this->input->post())){
+			$email = $this->session->userdata('email');
+			$new_pass = $this->input->post('new_pass');
+			$conf_pass = $this->input->post('conf_pass');
+
+			if($new_pass!=$conf_pass){
+				$data['errors'][] = lang('err_password_mismatch');
+			}else{
+				$this->User_model->update_password($email, $new_pass);
+				$data['success_message'][] = lang('your_password_changed');
+			}
+		}
+
+		$this->load->view('header');
+                $this->load->view('user/change_password', $data);
+                $this->load->view('footer');
 	}
 
         public function convert()
